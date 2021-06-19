@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  CognitoIDToken
+
+  Sample SAM Template for CognitoIDToken
+
+Globals:
+  Function:
+    Timeout: 10
+
+Resources:
+  # Call Lambda layer
+  Authentication:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorizer/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Layers:
+        - !Ref GetIDTokenLayers
+      Events:
+        auth:
+          Type: Api
+          Properties:
+            Path: /auth
+            Method: post
+  # Get ID Token based on payload
+  GetIDTokenLayers:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: GetIDTokenLayers
+      Description: Get ID Token from Cognito
+      ContentUri: getidtoken/
+      CompatibleRuntimes:
+        - nodejs12.x
+
+  # Create User Pool in Cognito
+  CognitoUserPool:
+    Type: 'AWS::Cognito::UserPool'
+    Properties:
+      UserPoolName: !Sub ${AWS::StackName}-user-pool
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: true
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_LINK
+  # Create User Pool Client in Cognito
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      # Generate an app client name based on the stage
+      ClientName: !Sub ${AWS::StackName}-user-pool-client
+      UserPoolId: !Ref CognitoUserPool
+      GenerateSecret: false
+      AllowedOAuthFlows:
+          - code
+          - implicit
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - email
+        - openid
+        - aws.cognito.signin.user.admin
+      CallbackURLs:
+        - 'https://example.com/callback'
+      DefaultRedirectURI: 'https://example.com/callback'
+      ExplicitAuthFlows:
+        - ALLOW_ADMIN_USER_PASSWORD_AUTH
+        - ALLOW_CUSTOM_AUTH
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      LogoutURLs:
+        - 'https://example.com/signout'
+      SupportedIdentityProviders:
+        - COGNITO
+      PreventUserExistenceErrors: ENABLED
+  WACognitoUserPoUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref CognitoUserPool
+      Domain: !Join
+        - ''
+        - - walab-
+          - !Select [2, !Split ['/', !Ref AWS::StackId]]
+
+Outputs:
+  CognitoUserPoolID:
+    Value: !Ref CognitoUserPool
+    Description: User Pool ID
+  CognitoAppClientID:
+    Value: !Ref CognitoUserPoolClient
+    Description: App Client ID
+  CognitoSignupURL:
+    Description: Firstly, please do sign up for API Authorization
+    Value: !Join
+      - ''
+      - - https://
+        - walab-
+        - !Select [2, !Split ['/', !Ref AWS::StackId]]
+        - !Sub '.auth.${AWS::Region}.amazoncognito.com/login?client_id='
+        - !Ref CognitoUserPoolClient
+        - '&response_type=code&scope=aws.cognito.signin.user.admin+email+openid&redirect_uri=https://example.com/callback'
+  APIEndpoint:
+      Description: "API Prod stage endpoint"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/auth"
