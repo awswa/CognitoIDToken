@@ -4,7 +4,7 @@ This project contains source code and supporting files for a serverless applicat
 
 - authorizer - Code for the application's Lambda function.
 - events - Invocation events that you can use to invoke the function.
-- getidtoken/nodejs/node_modules/auth - Lambda Layer to get ID token from Cognito using amazon-cognito-identity-js.
+- getidtoken/nodejs/node_modules/auth - **Lambda Layer** to get ID token from Cognito using amazon-cognito-identity-js.
 - template.yaml - A template that defines the application's AWS resources.
 
 ## Deploy the sample application
