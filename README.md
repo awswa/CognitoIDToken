@@ -10,7 +10,6 @@ This project contains source code and supporting files for a serverless applicat
 ## Deploy the sample application
 * AWS CLI - [How to install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
 * SAM CLI - [How to install AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* Node.js - [Install Node.js 12](https://nodejs.org/en/download/package-manager/), including the NPM package management tool.
 
 
 To build and deploy your application for the first time, run the following in your shell:
