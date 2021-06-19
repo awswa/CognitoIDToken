@@ -30,7 +30,7 @@ The first command will build the source of your application. The second command 
 You can find your API Gateway Endpoint URL in the output values displayed after deployment.
 
 ## How to use API
-Please refer to output in Cloudformation stack.
+Please refer to SAM CLI Output or Output tab in Cloudformation stack in AWS Console.
 
 **1. Sign up in Cognito**
 - Click CognitoSignupURL
