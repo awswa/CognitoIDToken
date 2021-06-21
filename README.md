@@ -62,7 +62,7 @@ Please refer to **SAM CLI Output** or Output tab in **Cloudformation stack in AW
 To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
 
 ```bash
-aws cloudformation delete-stack --stack-name CognitoIDToken
+aws cloudformation delete-stack --stack-name "Your CloudFormation Stack Name"
 ```
 
 ## Resources
