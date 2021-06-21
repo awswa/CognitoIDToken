@@ -17,9 +17,10 @@ To build and deploy your application for the first time, run the following in yo
 ```bash
 git clone https://github.com/awswa/CognitoIDToken.git
 cd CognitoIDToken
-sam deploy --guided
-
+```
 Follow the prompts on screen.
+```bash
+sam deploy --guided
 ```
 
 The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
