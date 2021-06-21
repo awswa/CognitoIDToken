@@ -79,6 +79,11 @@ Resources:
       SupportedIdentityProviders:
         - COGNITO
       PreventUserExistenceErrors: ENABLED
+      AccessTokenValidity: 1
+      IdTokenValidity: 1
+      TokenValidityUnits:
+        AccessToken: "days"
+        IdToken: "days"
   WACognitoUserPoUserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
