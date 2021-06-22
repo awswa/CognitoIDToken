@@ -2,11 +2,21 @@ const auth = require('auth');
 
 exports.lambdaHandler = async (event, context) => {
     try {
+        const params = JSON.parse(event.body);
+        const userpoolid = process.env.PoolID;
+        const clientid = process.env.AppID;
+
+        params["userpoolid"] = userpoolid;
+        params["clientid"] = clientid;
+        console.log(typeof(params));
+        console.log('event.body', params);
+
+
         // get id token from Cognito and return it to API Gateway
         const response = {
             statusCode: 200,
             body: JSON.stringify({
-                    id_token: await auth.handler(event.body)
+                    id_token: await auth.handler(params)
             }, null, 2)
         }
 

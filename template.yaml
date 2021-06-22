@@ -25,6 +25,11 @@ Resources:
           Properties:
             Path: /auth
             Method: post
+      Environment:
+        Variables:
+          PoolID: !Ref CognitoUserPool
+          AppID: !Ref CognitoUserPoolClient
+
   # Get ID Token based on payload
   GetIDTokenLayers:
     Type: AWS::Serverless::LayerVersion
