@@ -51,9 +51,7 @@ Please refer to **SAM CLI Output** or Output tab in **Cloudformation stack in AW
 ```bash
 {
     "username": "youremail@amazon.com",
-    "password": "yourpassword",
-    "userpoolid": "get from output in Cloudformation",
-    "clientid": "get from output in Cloudformation"
+    "password": "yourpassword"
 }
 ```
 
